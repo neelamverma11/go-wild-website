@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
+import { Box, Toolbar, IconButton, Typography, Menu, Container, MenuItem } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import MenuItem from '@mui/material/MenuItem';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -60,8 +53,6 @@ const Navbar = () => {
     };
 
     return (
-        // <AppBar position="static" sx={{ backgroundColor: "white" }}>
-        // <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'space-evenly', backgroundColor: "white" }}>
         <Container maxWidth="lg" >
             <Toolbar disableGutters >
                 {/* Websiteview  */}
@@ -83,7 +74,7 @@ const Navbar = () => {
                     GoWild
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} className={classes.linkBox}>
-                    <Link to='/' sx={{ my: 2, display: 'block' }} className={classes.linkItem} >
+                    <Link to='/home' sx={{ my: 2, display: 'block' }} className={classes.linkItem} >
                         Home
                     </Link>
                     <Link to='#' sx={{ my: 2, display: 'block' }} className={classes.linkItem}  >
@@ -176,7 +167,7 @@ const Navbar = () => {
                         }}
                     >
                         <MenuItem onClick={handleCloseNavMenu}>
-                            <Link to='/' sx={{ my: 2, color: 'white', display: 'block' }} className={classes.linkItemMobile}>Home </Link>
+                            <Link to='/home' sx={{ my: 2, color: 'white', display: 'block' }} className={classes.linkItemMobile}>Home </Link>
                         </MenuItem>
                         <MenuItem onClick={handleCloseNavMenu}>
                             <Link to='#' sx={{ my: 2, color: 'white', display: 'block' }} className={classes.linkItemMobile}>Features </Link>

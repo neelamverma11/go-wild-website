@@ -148,13 +148,13 @@ const FooterPage = () => {
             <Grid container spacing={2} justifyContent="space-evenly">
                 <Typography variant="body2" color="white" align="left" sx={{ mt: 5 }}>
                     {'Copyright © '}
-                    <Link color="inherit" href="/">
+                    <Link color="inherit" to="#">
                         @ all rights reserved
                     </Link>
                     {new Date().getFullYear()}
                 </Typography>
                 <Typography variant="body2" color="white" align="left" sx={{ mt: 5 }}>
-                    <Link color="inherit" href="/">
+                    <Link color="inherit" to="#">
                         Terms & conditions | Privacy policy
                     </Link>
                 </Typography>
