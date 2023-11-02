@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { TextField, MenuItem, Button, Grid, Alert, Dialog, RadioGroup, FormControlLabel, Radio, FormLabel, Typography, FormControl, InputLabel, Select } from '@mui/material';
+import { TextField, MenuItem, Button, Grid, RadioGroup, FormControlLabel, Radio, FormLabel, Typography, FormControl, Select } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import { countries, cities, famousPlaces } from './LocationData';
 import ApiComponent from './ApiComponent';
 import { useNavigate } from 'react-router-dom';
+import DialogBox from './DialogBox';
 
 const FormPage = () => {
     const id = uuidv4();
@@ -35,11 +36,20 @@ const FormPage = () => {
     const [adharCard, setAdharCard] = useState(null);
     const [panCard, setPanCard] = useState(null);
     const [otherID, setOtherID] = useState(null);
-    const [successDialogOpen, setSuccessDialogOpen] = useState(false);
-    const [failureDialogOpen, setFailureDialogOpen] = useState(false);
     const [formErrors, setFormErrors] = useState({});
     const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedState, setSelectedState] = useState('');
+    const [openDialog, setOpenDialog] = useState(false);
+    const [dialogContent, setDialogContent] = useState({ title: '', message: '' });
+
+    const handleOpenDialog = (title, message) => {
+        setDialogContent({ title, message });
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -118,14 +128,6 @@ const FormPage = () => {
         loadFamousPlaces();
     }, [formData.guide_city]);
 
-    const handleSuccessDialogClose = () => {
-        setSuccessDialogOpen(false);
-    };
-
-    const handleFailureDialogClose = () => {
-        setFailureDialogOpen(false);
-    };
-
     const validateEmail = (email) => {
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         return emailRegex.test(email);
@@ -202,11 +204,10 @@ const FormPage = () => {
         // API request
         const apiResponse = await ApiComponent(formData, image, adharCard, panCard, otherID, dob, id);
         if (apiResponse.status === 200) {
-            setSuccessDialogOpen(true);
+            handleOpenDialog('Success', 'Form data submitted successfully.');
             navigate('/')
-            // return;
         } else {
-            setFailureDialogOpen(true);
+            handleOpenDialog('Failure', 'Failed to submit the form data. Please try again.');
         }
     };
 
@@ -649,27 +650,11 @@ const FormPage = () => {
                     </Grid>
                 </Grid>
             </form>
-            {/* Success Dialog */}
-            <Dialog open={successDialogOpen} onClose={handleSuccessDialogClose}>
-                <Alert
-                    severity="success"
-                    onClose={handleSuccessDialogClose}  >
-                    Thank you! Form data submitted successfully.
-                </Alert>
-            </Dialog>
-
-            {/* Failure Dialog */}
-            <Dialog open={failureDialogOpen} onClose={handleFailureDialogClose}>
-                <Alert
-                    severity="error"
-                    action={
-                        <Button onClick={handleFailureDialogClose} color="inherit" size="small">
-                            Resubmit
-                        </Button>
-                    } >
-                    Failed to submit the form data. Please try again.
-                </Alert>
-            </Dialog>
+            <DialogBox
+                open={openDialog}
+                onClose={handleCloseDialog}
+                title={dialogContent.title}
+                content={dialogContent.message} />
         </div>
     );
 };
