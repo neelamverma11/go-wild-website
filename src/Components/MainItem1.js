@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1,
     },
     card: {
-        height: '100%',
+        height: '80%',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -30,64 +30,63 @@ const useStyles = makeStyles((theme) => ({
             color: "lightGreen",
         }
     },
+    explore: {
+
+    }
 }));
 
-const MainItem1 = () => {
+const MainItem = () => {
     const classes = useStyles();
     return (
-        <main>
-            <Box
-                sx={{
-                    bgcolor: 'lightGreen',
-                    pt: 8,
-                    pb: 6,
-                }}
-            >
-                <Container maxWidth="md">
-                    <Grid container spacing={6}>
-                        <Grid item xs={12} sm={6}>
-                            <Card className={classes.card}>
-                                <CardMedia
-                                    component="div"
-                                    sx={{
-                                        // 16: 9
-                                        pt: '100%',
-                                    }}
-                                    image="https://source.unsplash.com/random?world"
-                                />
-                            </Card>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <Typography
-                                component="h1"
-                                variant="h5"
-                                align="start"
-                                color="text.primary"
-                                fontWeight={700}
-                                gutterBottom
-                            >
-                                Discover, Explore, Go Wild
-                            </Typography>
-                            <Typography variant="h5" align="start" color="text.secondary" paragraph>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus iste architecto quo nostrum rerum blanditiis, minus aut iusto dolorum incidunt molestiae nam vero ex illo omnis. Nostrum rerum blanditiis eaque.
-                            </Typography>
-                            <Stack
-                                sx={{ pt: 4 }}
-                                direction="row"
-                                spacing={2}
-                                justifyContent="start"
-                            >
-                                <Link to='/featur' className={classes.linkItem} >
-                                    <Button variant="contained">Exlpore Now</Button>
-                                </Link>
-                            </Stack>
-                        </Grid>
-
+        <Box
+            sx={{
+                bgcolor: 'lightGreen',
+                pt: 8,
+            }}
+        >
+            <Container maxWidth="lg">
+                <Grid container spacing={8}>
+                    <Grid item xs={12} sm={5}>
+                        <Card className={classes.card}>
+                            <CardMedia
+                                component="div"
+                                sx={{
+                                    // 16: 9,
+                                    pt: '80%',
+                                }}
+                                image="https://source.unsplash.com/random?mountain"
+                            />
+                        </Card>
                     </Grid>
-                </Container>
-            </Box>
-        </main>
+                    <Grid item xs={12} sm={7}>
+                        <Typography
+                            component="h1"
+                            variant="h5"
+                            align="start"
+                            color="text.primary"
+                            fontWeight={700}
+                            gutterBottom
+                        >
+                            We're Currently Hiring Guides
+                        </Typography>
+                        <Typography variant="h6" align="start" color="text.secondary" paragraph>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus iste architecto quo nostrum rerum blanditiis, minus aut iusto dolorum incidunt molestiae nam vero ex illo omnis. Nostrum rerum blanditiis eaque.
+                        </Typography>
+                        <Stack
+                            sx={{ pt: 4 }}
+                            direction="row"
+                            spacing={2}
+                            justifyContent="start"
+                        >
+                            <Link to='#' className={classes.linkItem} >
+                                <Button variant="contained">Register as Guide</Button>
+                            </Link>
+                        </Stack>
+                    </Grid>
+                </Grid>
+            </Container>
+        </Box>
     )
 }
 
-export default MainItem1
+export default MainItem;

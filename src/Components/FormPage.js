@@ -1,12 +1,35 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import Alert from '@mui/material/Alert';
-import Dialog from '@mui/material/Dialog';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FormLabel, Typography } from '@mui/material';
+import { TextField, MenuItem, Button, Grid, Alert, Dialog, RadioGroup, FormControlLabel, Radio, FormLabel, Typography, FormControl, InputLabel, Select } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+
+const countries = [
+    { name: 'India', states: ['Karnataka', 'Maharashtra', 'Goa'] },
+    { name: 'USA', states: ['California', 'NewYork',] },
+];
+
+const cities = {
+    Karnataka: ['Bangalore', 'Mysore', 'Hubli'],
+    Maharashtra: ['Mumbai', 'Pune'],
+    Goa: ['Panjim'],
+
+    California: ['LosAngeles', 'SanFrancisco'],
+    NewYork: ['NewYorkCity', 'Albany'],
+};
+const famousPlaces = {
+    Bangalore: ['CubbonPark', 'LalbaghBotanicalGarden', 'VidhanaSoudha'],
+    Mysore: [' Park', 'LalbaghBotanical ', ' Soudha'],
+    Hubli: ['Cubbon ', 'Lalbagh Garden', 'Vidhana '],
+    Pune: ['Gateway ', ' Drive', 'Siddhivinayak '],
+    Mumbai: ['GatewayofIndia', 'MarineDrive', 'SiddhivinayakTemple'],
+    Panjim: ['DonaPaula', 'MarineBeach', 'MahalashaTemple'],
+
+    LosAngeles: ['HollywoodWalkofFame', 'UniversalStudiosHollywood', 'GriffithObservatory'],
+    SanFrancisco: [' WalkofFame', ' StudiosHollywood', ' Observatory'],
+
+    Albany: ['Griffith', 'Observatory'],
+    NewYorkCity: ['Houston', 'Austin', 'Dallas'],
+};
 
 const FormPage = () => {
     const id = uuidv4();
@@ -15,7 +38,6 @@ const FormPage = () => {
         first_name: '',
         last_name: '',
         bio: '',
-        dob: '',
         gender: '',
         guide_city: '',
         guide_state: '',
@@ -23,18 +45,18 @@ const FormPage = () => {
         contact_number: '',
         whatsapp_number: '',
         email: '',
-        languages: '',
-        activities: '',
-        hobbies: '',
+        languages: [],
+        activities: [],
+        hobbies: [],
         guide_spot_city: '',
         guide_spot_places: '',
         experience: '',
         price_per_day: '',
         submitted_by: '',
-        submitted_name: '',
         submitted_phone: '',
     });
 
+    const [dob, setDOB] = useState('');
     const [image, setImage] = useState(null);
     const [adharCard, setAdharCard] = useState(null);
     const [panCard, setPanCard] = useState(null);
@@ -42,6 +64,8 @@ const FormPage = () => {
     const [successDialogOpen, setSuccessDialogOpen] = useState(false);
     const [failureDialogOpen, setFailureDialogOpen] = useState(false);
     const [formErrors, setFormErrors] = useState({});
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedState, setSelectedState] = useState('');
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -55,6 +79,71 @@ const FormPage = () => {
         });
     };
 
+    const handleCountryChange = (event) => {
+        const selectedCountry = event.target.value;
+        setSelectedCountry(selectedCountry);
+        setSelectedState('');
+        setFormData({
+            ...formData,
+            guide_country: selectedCountry,
+            guide_state: '',
+            guide_city: '',
+            guide_spot_city: '',
+            guide_spot_places: '',
+        });
+    };
+
+    const handleStateChange = (event) => {
+        const selectedState = event.target.value;
+        setSelectedState(selectedState);
+        setFormData({
+            ...formData,
+            guide_state: selectedState,
+            guide_city: '',
+            guide_spot_city: '',
+            guide_spot_places: '',
+        });
+    };
+
+    const handleCityChange = (event) => {
+        const selectedCity = event.target.value;
+        setFormData({
+            ...formData,
+            guide_city: selectedCity,
+            guide_spot_city: selectedCity,
+            guide_spot_places: '',
+        });
+    };
+
+    const handleGuideSpotCityChange = (event) => {
+        const selectedSpotCity = event.target.value;
+        setFormData({
+            ...formData,
+            guide_spot_city: selectedSpotCity,
+            guide_spot_places: '',
+        });
+    };
+    const handleSpotPlacesChange = (event) => {
+        const selectedSpotPlace = event.target.value;
+        setFormData({
+            ...formData,
+            guide_spot_places: selectedSpotPlace,
+        });
+    };
+
+    const loadFamousPlaces = () => {
+        const selectedCity = formData.guide_city;
+        if (selectedCity) {
+            setFormData({
+                ...formData,
+                guide_spot_places: famousPlaces[selectedCity] || '',
+            });
+        }
+    };
+    useEffect(() => {
+        loadFamousPlaces();
+    }, [formData.guide_city]);
+
     const handleSuccessDialogClose = () => {
         setSuccessDialogOpen(false);
     };
@@ -63,11 +152,72 @@ const FormPage = () => {
         setFailureDialogOpen(false);
     };
 
+    const validateEmail = (email) => {
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        return emailRegex.test(email);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('submit')
+        // console.log('submit')
+
         // Basic client-side validation
         const errors = {};
+
+        if (!validateEmail(formData.email)) {
+            errors.email = 'Invalid email format';
+        }
+        const phoneRegex = /^[0-9]{10}$/;
+
+        if (!phoneRegex.test(formData.contact_number)) {
+            errors.contact_number = 'Invalid phone number format. It should be 10 digits.';
+        }
+
+        if (formData.whatsapp_number && !phoneRegex.test(formData.whatsapp_number)) {
+            errors.whatsapp_number = 'Invalid WhatsApp number format. It should be 10 digits.';
+        }
+
+        if (!phoneRegex.test(formData.submitted_phone)) {
+            errors.submitted_phone = 'Invalid phone number format. It should be 10 digits.';
+        }
+        const originalDob = "11/05/1972";
+        const [day, month, year] = originalDob.split('/');
+        const formattedDob = `${month}/${day}/${year}`;
+
+        if (!formData.gender) {
+            errors.gender = 'Gender is required.';
+        }
+        if (!image) {
+            errors.image = 'Image is required.';
+        }
+
+        if (!dob) {
+            errors.dob = 'DOB is required.';
+        }
+
+        if (!adharCard) {
+            errors.aadhar_id = 'AdhaarId is required.';
+        }
+        if (!panCard) {
+            errors.pan_id = 'Pan Id is required.';
+        }
+        // if (!otherID) {
+        //     errors.other_id = 'Other Id is required.';
+        // }
+
+        // Validate arrays (hobbies, activities, languages)
+        if (!formData.hobbies || formData.hobbies.length === 0) {
+            errors.hobbies = 'At least one hobby is required.';
+        }
+
+        if (!formData.activities || formData.activities.length === 0) {
+            errors.activities = 'At least one activity is required.';
+        }
+
+        if (!formData.languages || formData.languages.length === 0) {
+            errors.languages = 'At least one language is required.';
+        }
+
         for (const key in formData) {
             if (!formData[key]) {
                 errors[key] = 'This field is required.';
@@ -87,6 +237,7 @@ const FormPage = () => {
             formDataImage.append('aadhar_id', adharCard);
             formDataImage.append('pan_id', panCard);
             formDataImage.append('other_id', otherID);
+            formDataImage.append('dob', formattedDob);
 
             // Append other form data to formDataImage
             for (const key in formData) {
@@ -94,7 +245,7 @@ const FormPage = () => {
             }
 
             const response = await axios.post(
-                'https://ojasbarik.pythonanywhere.com/test/guide_personal_details/',
+                'https://rashailmachinetest.pythonanywhere.com/test/guide_personal_details/',
                 formDataImage,
             );
             console.log(response)
@@ -109,19 +260,69 @@ const FormPage = () => {
         }
     };
 
+    // Function to check if all required fields are filled
+    // const areRequiredFieldsFilled = () => {
+    //     const requiredFields = [
+    //         'titles',
+    //         'languages',
+    //         'activities',
+    //         'hobbies',
+    //         'image',
+    //         'first_name',
+    //         'last_name',
+    //         'bio',
+    //         'dob',
+    //         'gender',
+    //         'guide_city',
+    //         'guide_state',
+    //         'guide_country',
+    //         'contact_number',
+    //         'whatsapp_number',
+    //         'email',
+    //         'guide_spot_city',
+    //         'guide_spot_places',
+    //         'experience',
+    //         'price_per_day',
+    //         'submitted_by',
+    //         'submitted_phone'
+    //     ];
+
+    //     for (const fieldName of requiredFields) {
+    //         if (fieldName === 'languages' || fieldName === 'activities' || fieldName === 'hobbies') {
+    //             if (!Array.isArray(formData[fieldName]) || formData[fieldName].length === 0) {
+    //                 return false;
+    //             }
+    //         } else {
+    //             if (!formData[fieldName]) {
+    //                 return false;
+    //             }
+    //         }
+    //     }
+    //     return true;
+    // }
+
+
     return (
         <div>
+            {/* <Container maxWidth="lg"> */}
             <form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
+                <Grid container maxWidth="lg" spacing={2}>
                     <Grid item xs={5} sm={2}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Titles</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Titles"
-                            name="titles"
-                            value={formData.titles}
-                            onChange={handleInputChange}
-                        />
+                        <FormControl fullWidth>
+                            {/* <InputLabel>Select Title</InputLabel> */}
+                            <Select
+                                name="titles"
+                                value={formData.titles}
+                                onChange={handleInputChange}
+                            >
+                                <MenuItem value="">Select</MenuItem>
+                                <MenuItem value="Dr.">Dr.</MenuItem>
+                                <MenuItem value="Mr.">Mr.</MenuItem>
+                                <MenuItem value="Mrs.">Mrs.</MenuItem>
+                                <MenuItem value="Miss">Miss</MenuItem>
+                            </Select>
+                        </FormControl>
                         {formErrors.titles && (
                             <Typography variant="body2" color="error">
                                 {formErrors.titles}
@@ -165,6 +366,8 @@ const FormPage = () => {
                             fullWidth
                             label="Bio"
                             name="bio"
+                            multiline
+                            rows={2}
                             value={formData.bio}
                             onChange={handleInputChange}
                         />
@@ -180,7 +383,7 @@ const FormPage = () => {
                         <TextField
                             fullWidth
                             type='file'
-                            label="Image"
+                            // label="Image"
                             name="image"
                             onChange={(e) => setImage(e.target.files[0])}
                         />
@@ -191,14 +394,15 @@ const FormPage = () => {
                         )}
                     </Grid>
 
-                    <Grid item xs={6} sm={4}>
+                    <Grid item xs={12} sm={4}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Date Of Birth</FormLabel>
                         <TextField
                             fullWidth
-                            label="DOB"
+                            // label="DOB"
+                            type="date"
                             name="dob"
-                            value={formData.dob}
-                            onChange={handleInputChange}
+                            value={dob}
+                            onChange={(e) => setDOB(e.target.value)}
                         />
                         {formErrors.dob && (
                             <Typography variant="body2" color="error">
@@ -206,67 +410,110 @@ const FormPage = () => {
                             </Typography>
                         )}
                     </Grid>
-                    <Grid item xs={6} sm={8}>
+                    <Grid item xs={12} sm={8}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Gender</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Gender"
+                        <RadioGroup
                             name="gender"
                             value={formData.gender}
                             onChange={handleInputChange}
-                        />
+                            style={{ display: 'flex', flexDirection: 'row' }}
+                        >
+                            <FormControlLabel
+                                value="male"
+                                control={<Radio />}
+                                label="Male"
+                                sx={{ marginLeft: 0 }}
+                            />
+                            <FormControlLabel
+                                value="female"
+                                control={<Radio />}
+                                label="Female"
+                                sx={{ marginLeft: 0 }}
+                            />
+                            <FormControlLabel
+                                value="others"
+                                control={<Radio />}
+                                label="Others"
+                                sx={{ marginLeft: 0 }}
+                            />
+                        </RadioGroup>
                         {formErrors.gender && (
                             <Typography variant="body2" color="error">
                                 {formErrors.gender}
                             </Typography>
                         )}
                     </Grid>
-
-                    <Grid item xs={4} >
-                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>City</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Guide City"
-                            name="guide_city"
-                            value={formData.guide_city}
-                            onChange={handleInputChange}
-                        />
-                        {formErrors.guide_city && (
-                            <Typography variant="body2" color="error">
-                                {formErrors.guide_city}
-                            </Typography>
-                        )}
-                    </Grid>
-                    <Grid item xs={4} >
-                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>State</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Guide State"
-                            name="guide_state"
-                            value={formData.guide_state}
-                            onChange={handleInputChange}
-                        />
-                        {formErrors.guide_state && (
-                            <Typography variant="body2" color="error">
-                                {formErrors.guide_state}
-                            </Typography>
-                        )}
-                    </Grid>
-                    <Grid item xs={4} >
+                    <Grid item xs={4}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Country</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Guide Country"
-                            name="guide_country"
-                            value={formData.guide_country}
-                            onChange={handleInputChange}
-                        />
-                        {formErrors.guide_country && (
-                            <Typography variant="body2" color="error">
-                                {formErrors.guide_country}
-                            </Typography>
-                        )}
+                        <FormControl fullWidth>
+                            <Select
+                                name="guide_country"
+                                value={selectedCountry}
+                                onChange={handleCountryChange}
+                            >
+                                <MenuItem value="">Select Country</MenuItem>
+                                {countries.map((country) => (
+                                    <MenuItem key={country.name} value={country.name}>
+                                        {country.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                            {formErrors.guide_country && (
+                                <Typography variant="body2" color="error">
+                                    {formErrors.guide_country}
+                                </Typography>
+                            )}
+                        </FormControl>
                     </Grid>
+                    <Grid item xs={4}>
+                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>State</FormLabel>
+                        <FormControl fullWidth>
+                            <Select
+                                name="guide_state"
+                                value={selectedState}
+                                onChange={handleStateChange}
+                            >
+                                <MenuItem value="">Select State</MenuItem>
+                                {selectedCountry &&
+                                    countries
+                                        .find((country) => country.name === selectedCountry)
+                                        .states.map((state) => (
+                                            <MenuItem key={state} value={state}>
+                                                {state}
+                                            </MenuItem>
+                                        ))}
+                            </Select>
+                            {formErrors.guide_state && (
+                                <Typography variant="body2" color="error">
+                                    {formErrors.guide_state}
+                                </Typography>
+                            )}
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>City</FormLabel>
+                        <FormControl fullWidth>
+                            <Select
+                                name="guide_city"
+                                value={formData.guide_city}
+                                onChange={handleCityChange}
+                            >
+                                <MenuItem value="">Select City</MenuItem>
+                                {selectedState &&
+                                    cities[selectedState].map((city) => (
+                                        <MenuItem key={city} value={city}>
+                                            {city}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                            {formErrors.guide_city && (
+                                <Typography variant="body2" color="error">
+                                    {formErrors.guide_city}
+                                </Typography>
+                            )}
+                        </FormControl>
+                    </Grid>
+
                     <Grid item xs={6} sm={6}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Contact Number</FormLabel>
                         <TextField
@@ -314,13 +561,21 @@ const FormPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={12}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Languages</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Languages"
-                            name="languages"
-                            value={formData.languages}
-                            onChange={handleInputChange}
-                        />
+                        <FormControl fullWidth>
+                            {/* <InputLabel>Select Languages</InputLabel> */}
+                            <Select
+                                name="languages"
+                                value={formData.languages}
+                                onChange={handleInputChange}
+                                multiple
+                                renderValue={(selected) => selected.join(', ')}
+                            // defaultValue={'Select Activities'} // Set a default value
+                            >
+                                <MenuItem value="English">English</MenuItem>
+                                <MenuItem value="Spanish">Spanish</MenuItem>
+                                <MenuItem value="French">French</MenuItem>
+                            </Select>
+                        </FormControl>
                         {formErrors.languages && (
                             <Typography variant="body2" color="error">
                                 {formErrors.languages}
@@ -329,13 +584,19 @@ const FormPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={12}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Activities</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Activities"
-                            name="activities"
-                            value={formData.activities}
-                            onChange={handleInputChange}
-                        />
+                        <FormControl fullWidth>
+                            <Select
+                                name="activities"
+                                value={formData.activities}
+                                onChange={handleInputChange}
+                                multiple
+                                renderValue={(selected) => selected.join(', ')}
+                            >
+                                <MenuItem value="Roller Coster">Roller Coster</MenuItem>
+                                <MenuItem value="Water Slides">Water Slides</MenuItem>
+                                <MenuItem value="Cycling">Cycling</MenuItem>
+                            </Select>
+                        </FormControl>
                         {formErrors.activities && (
                             <Typography variant="body2" color="error">
                                 {formErrors.activities}
@@ -344,43 +605,66 @@ const FormPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={12}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Hobbies</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Hobbies"
-                            name="hobbies"
-                            value={formData.hobbies}
-                            onChange={handleInputChange}
-                        />
+                        <FormControl fullWidth>
+                            <Select
+                                name="hobbies"
+                                value={formData.hobbies}
+                                onChange={handleInputChange}
+                                multiple
+                                renderValue={(selected) => selected.join(', ')}
+                            >
+                                <MenuItem value="Reading">Reading</MenuItem>
+                                <MenuItem value="Painting">Painting</MenuItem>
+                                <MenuItem value="Dancing">Dancing</MenuItem>
+                            </Select>
+                        </FormControl>
                         {formErrors.hobbies && (
                             <Typography variant="body2" color="error">
                                 {formErrors.hobbies}
                             </Typography>
                         )}
                     </Grid>
+
                     <Grid item xs={12} sm={6}>
-                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>City</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Guide Spot City"
-                            name="guide_spot_city"
-                            value={formData.guide_spot_city}
-                            onChange={handleInputChange}
-                        />
-                        {formErrors.guide_spot_city && (
-                            <Typography variant="body2" color="error">
-                                {formErrors.guide_spot_city}
-                            </Typography>
-                        )}
+                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Guide Spot City</FormLabel>
+                        <FormControl fullWidth>
+                            <Select
+                                name="guide_spot_city"
+                                value={formData.guide_spot_city}
+                                onChange={handleGuideSpotCityChange}
+                            >
+                                <MenuItem value="">Select Spot City</MenuItem>
+                                {selectedState &&
+                                    cities[selectedState].map((city) => (
+                                        <MenuItem key={city} value={city}>
+                                            {city}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                            {formErrors.guide_spot_city && (
+                                <Typography variant="body2" color="error">
+                                    {formErrors.guide_spot_city}
+                                </Typography>
+                            )}
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Places</FormLabel>
-                        <TextField
-                            fullWidth
-                            label="Guide Spot Places"
-                            name="guide_spot_places"
-                            value={formData.guide_spot_places}
-                            onChange={handleInputChange}
-                        />
+                        <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Famous Places</FormLabel>
+                        <FormControl fullWidth>
+                            <Select
+                                name="guide_spot_places"
+                                value={formData.guide_spot_places}
+                                onChange={handleSpotPlacesChange}
+                            >
+                                <MenuItem value="">Select Famous Place</MenuItem>
+                                {formData.guide_spot_city &&
+                                    famousPlaces[formData.guide_spot_city].map((place) => (
+                                        <MenuItem key={place} value={place}>
+                                            {place}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                        </FormControl>
                         {formErrors.guide_spot_places && (
                             <Typography variant="body2" color="error">
                                 {formErrors.guide_spot_places}
@@ -389,20 +673,28 @@ const FormPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Years of Experience </FormLabel>
-                        <TextField
-                            fullWidth
-                            type='number'
-                            label="Experience"
-                            name="experience"
-                            value={formData.experience}
-                            onChange={handleInputChange}
-                        />
+                        <FormControl fullWidth>
+                            {/* <InputLabel>Select Title</InputLabel> */}
+                            <Select
+                                type='number'
+                                name="experience"
+                                value={formData.experience}
+                                onChange={handleInputChange}
+                            >
+                                <MenuItem value="">Select years</MenuItem>
+                                <MenuItem value={1}>1 years</MenuItem>
+                                <MenuItem value={2}>2 years</MenuItem>
+                                <MenuItem value={3}>3 years</MenuItem>
+                                {/* <MenuItem value=>more</MenuItem> */}
+                            </Select>
+                        </FormControl>
                         {formErrors.experience && (
                             <Typography variant="body2" color="error">
                                 {formErrors.experience}
                             </Typography>
                         )}
                     </Grid>
+
                     <Grid item xs={12} sm={6}>
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Price Per Day</FormLabel>
                         <TextField
@@ -424,7 +716,7 @@ const FormPage = () => {
                         <TextField
                             fullWidth
                             type='file'
-                            label="Aadhar Id"
+                            // label="Aadhar Id"
                             name="aadhar_id"
                             onChange={(e) => setAdharCard(e.target.files[0])}
                         />
@@ -439,7 +731,7 @@ const FormPage = () => {
                         <TextField
                             fullWidth
                             type='file'
-                            label="Pan Id"
+                            // label="Pan Id"
                             name="pan_id"
                             onChange={(e) => setPanCard(e.target.files[0])}
                         />
@@ -454,7 +746,7 @@ const FormPage = () => {
                         <TextField
                             fullWidth
                             type='file'
-                            label="Other Id"
+                            // label="Other Id"
                             name="other_id"
                             onChange={(e) => setOtherID(e.target.files[0])} />
                         {formErrors.other_id && (
@@ -467,8 +759,9 @@ const FormPage = () => {
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Submitted By</FormLabel>
                         <TextField
                             fullWidth
-                            label="Name"
+                            // label="Name"
                             name="submitted_by"
+                            placeholder="Neelam Verma"
                             value={formData.submitted_by}
                             onChange={handleInputChange}
                         />
@@ -482,8 +775,9 @@ const FormPage = () => {
                         <FormLabel sx={{ color: 'black', fontWeight: '700', marginLeft: 1.5 }}>Submitted Phone</FormLabel>
                         <TextField
                             fullWidth
-                            label="+91"
+                            // label="+91"
                             name="submitted_phone"
+                            placeholder='7206751772'
                             value={formData.submitted_phone}
                             onChange={handleInputChange}
                         />
@@ -495,13 +789,17 @@ const FormPage = () => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <Button variant="contained" color="primary" type="submit">
+                        <Button variant="contained" color="primary" type="submit"
+                        // disabled={!areRequiredFieldsFilled()}
+                        >
                             Submit
                         </Button>
+
+
                     </Grid>
                 </Grid>
             </form>
-
+            {/* </Container> */}
             {/* Success Dialog */}
             <Dialog open={successDialogOpen} onClose={handleSuccessDialogClose}>
                 <Alert

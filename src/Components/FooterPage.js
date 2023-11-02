@@ -1,6 +1,11 @@
 import React from 'react'
 import { Box, Button, Container, Grid, Link, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -19,22 +24,31 @@ const useStyles = makeStyles((theme) => ({
             color: "lightGreen",
         }
     },
+    iconColor: {
+        width: "12px",
+        height: "12px",
+        backgroundColor: "white",
+        borderRadius: '50%',
+        marginLeft: "10px",
+        padding: "8px"
+    }
 }));
 
 const footers = [
     {
-        title: 'Features',
+        title: 'Quik Links',
         description: [
             'Home',
-            'Random feature',
-            'Team feature',
-            'Developer stuff',
+            'About us',
+            'Feature',
+            'Contact us',
         ],
     },
     {
-        title: 'Resources',
-        description: ['Home', 'Resource name', 'Another resource', 'Final resource'],
+        title: 'About Us',
+        description: ['About Chatbot', 'Contact us', 'Features', ' Careers'],
     },
+
 ];
 
 const FooterPage = () => {
@@ -69,28 +83,59 @@ const FooterPage = () => {
                     <Typography align="start" color="white" >
                         Lorem ipsum dolor sit amet consectetur <br /> adipisicing elit. Natus iste architecto <br /> quo nostrum rerum blanditiis.
                     </Typography>
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, color: "white" }} >
+                        <div>
+                            <Link to="#">
+                                <span  >
+                                    <FacebookIcon className={classes.iconColor} />
+                                </span>
+                            </Link>
+                        </div>
+                        <div>
+                            <Link to="#">
+                                <span style={{ marginLeft: '22px' }}>
+                                    <TwitterIcon className={classes.iconColor} />
+                                </span>
+                            </Link>
+                        </div>
+                        <div>
+                            <Link to="#">
+                                <span style={{ marginLeft: '22px' }}>
+                                    <InstagramIcon className={classes.iconColor} />
+                                </span>
+                            </Link>
+                        </div>
+                        <div>
+                            <Link to="#">
+                                <span style={{ marginLeft: '22px' }}>
+                                    <WhatsAppIcon className={classes.iconColor} />
+                                </span>
+                            </Link>
+                        </div>
+                    </Box>
+                    <Typography align="start" color="white" >
+                        Contact us <br /><WhatsAppIcon /> 8979951459 <br /><MailOutlineOutlinedIcon /> gowildexplorer@gmail.com
+                    </Typography>
                 </Box>
-                {footers.map((footer) => (
-                    <Grid item xs={6} sm={3} >
+                {footers.map((footer, index) => (
+                    <Grid item xs={6} sm={3} key={index} >
                         <Typography variant="h6" color="white" gutterBottom>
                             {footer.title}
                         </Typography>
                         <ul>
-                            {footer.description.map((item) => (
-                                <>
-                                    <li >
-                                        <Link href="/" variant="subtitle1" className={classes.linkItem}>
-                                            {item}
-                                        </Link>
-                                    </li>
-                                </>
+                            {footer.description.map((item, index) => (
+                                <li key={index} >
+                                    <Link to="#" variant="subtitle1" className={classes.linkItem}>
+                                        {item}
+                                    </Link>
+                                </li>
                             ))}
                         </ul>
                     </Grid>
 
                 ))}
                 <Box className={classes.button}
-                // sx={{display: { xs: 'none', md: 'block' }}} 
+                    sx={{ display: { xs: 'inline-table', md: 'block' } }}
                 >
                     <Typography sx={{ mt: 5, ml: 3 }} >Subscribe</Typography>
                     <TextField text='email' placeholder='Email' sx={{ m: 3, color: 'white' }} />
@@ -99,6 +144,7 @@ const FooterPage = () => {
             </Grid>
 
             <br />
+            <hr />
             <Grid container spacing={2} justifyContent="space-evenly">
                 <Typography variant="body2" color="white" align="left" sx={{ mt: 5 }}>
                     {'Copyright © '}
