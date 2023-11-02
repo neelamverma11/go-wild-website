@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { TextField, MenuItem, Button, Grid, Alert, Dialog, RadioGroup, FormControlLabel, Radio, FormLabel, Typography, FormControl, InputLabel, Select } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import { countries, cities, famousPlaces } from './LocationData';
+import ApiComponent from './ApiComponent';
 
 const FormPage = () => {
     const id = uuidv4();
@@ -132,7 +132,6 @@ const FormPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log('submit')
 
         // Basic client-side validation
         const errors = {};
@@ -153,9 +152,6 @@ const FormPage = () => {
         if (!phoneRegex.test(formData.submitted_phone)) {
             errors.submitted_phone = 'Invalid phone number format. It should be 10 digits.';
         }
-        const originalDob = "11/05/1972";
-        const [day, month, year] = originalDob.split('/');
-        const formattedDob = `${month}/${day}/${year}`;
 
         if (!formData.gender) {
             errors.gender = 'Gender is required.';
@@ -174,11 +170,7 @@ const FormPage = () => {
         if (!panCard) {
             errors.pan_id = 'Pan Id is required.';
         }
-        // if (!otherID) {
-        //     errors.other_id = 'Other Id is required.';
-        // }
 
-        // Validate arrays (hobbies, activities, languages)
         if (!formData.hobbies || formData.hobbies.length === 0) {
             errors.hobbies = 'At least one hobby is required.';
         }
@@ -203,32 +195,13 @@ const FormPage = () => {
         //     return;
         // }
 
-        try {
-            const formDataImage = new FormData();
-            formDataImage.append('guide_id', id);
-            formDataImage.append('image', image);
-            formDataImage.append('aadhar_id', adharCard);
-            formDataImage.append('pan_id', panCard);
-            formDataImage.append('other_id', otherID);
-            formDataImage.append('dob', formattedDob);
+        // API request
+        const apiResponse = await ApiComponent(formData, image, adharCard, panCard, otherID, dob, id);
 
-            // Append other form data to formDataImage
-            for (const key in formData) {
-                formDataImage.append(key, formData[key]);
-            }
-
-            const response = await axios.post(
-                'https://rashailmachinetest.pythonanywhere.com/test/guide_personal_details/',
-                formDataImage,
-            );
-            console.log(response)
-            if (response.status === 200) {
-                setSuccessDialogOpen(true);
-                return;
-            } else {
-                throw new Error('API request failed');
-            }
-        } catch (error) {
+        if (apiResponse.success) {
+            setSuccessDialogOpen(true);
+            return;
+        } else {
             setFailureDialogOpen(true);
         }
     };
