@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
     linkItem: {
         textDecoration: "none",
-        color: "black",
+        color: "white",
         letterSpacing: '1px',
         padding: "10px",
         transition: "color 0.3s",
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '50%',
         marginLeft: "10px",
         padding: "8px"
-    }
+    },
 }));
 
 const footers = [
@@ -118,7 +118,7 @@ const FooterPage = () => {
                     </Typography>
                 </Box>
                 {footers.map((footer, index) => (
-                    <Grid item xs={6} sm={3} key={index} >
+                    <Grid item xs={6} sm={2} key={index} >
                         <Typography variant="h6" color="white" gutterBottom>
                             {footer.title}
                         </Typography>

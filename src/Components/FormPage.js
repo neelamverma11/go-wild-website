@@ -2,34 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { TextField, MenuItem, Button, Grid, Alert, Dialog, RadioGroup, FormControlLabel, Radio, FormLabel, Typography, FormControl, InputLabel, Select } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-
-const countries = [
-    { name: 'India', states: ['Karnataka', 'Maharashtra', 'Goa'] },
-    { name: 'USA', states: ['California', 'NewYork',] },
-];
-
-const cities = {
-    Karnataka: ['Bangalore', 'Mysore', 'Hubli'],
-    Maharashtra: ['Mumbai', 'Pune'],
-    Goa: ['Panjim'],
-
-    California: ['LosAngeles', 'SanFrancisco'],
-    NewYork: ['NewYorkCity', 'Albany'],
-};
-const famousPlaces = {
-    Bangalore: ['CubbonPark', 'LalbaghBotanicalGarden', 'VidhanaSoudha'],
-    Mysore: [' Park', 'LalbaghBotanical ', ' Soudha'],
-    Hubli: ['Cubbon ', 'Lalbagh Garden', 'Vidhana '],
-    Pune: ['Gateway ', ' Drive', 'Siddhivinayak '],
-    Mumbai: ['GatewayofIndia', 'MarineDrive', 'SiddhivinayakTemple'],
-    Panjim: ['DonaPaula', 'MarineBeach', 'MahalashaTemple'],
-
-    LosAngeles: ['HollywoodWalkofFame', 'UniversalStudiosHollywood', 'GriffithObservatory'],
-    SanFrancisco: [' WalkofFame', ' StudiosHollywood', ' Observatory'],
-
-    Albany: ['Griffith', 'Observatory'],
-    NewYorkCity: ['Houston', 'Austin', 'Dallas'],
-};
+import { countries, cities, famousPlaces } from './LocationData';
 
 const FormPage = () => {
     const id = uuidv4();
@@ -259,48 +232,6 @@ const FormPage = () => {
             setFailureDialogOpen(true);
         }
     };
-
-    // Function to check if all required fields are filled
-    // const areRequiredFieldsFilled = () => {
-    //     const requiredFields = [
-    //         'titles',
-    //         'languages',
-    //         'activities',
-    //         'hobbies',
-    //         'image',
-    //         'first_name',
-    //         'last_name',
-    //         'bio',
-    //         'dob',
-    //         'gender',
-    //         'guide_city',
-    //         'guide_state',
-    //         'guide_country',
-    //         'contact_number',
-    //         'whatsapp_number',
-    //         'email',
-    //         'guide_spot_city',
-    //         'guide_spot_places',
-    //         'experience',
-    //         'price_per_day',
-    //         'submitted_by',
-    //         'submitted_phone'
-    //     ];
-
-    //     for (const fieldName of requiredFields) {
-    //         if (fieldName === 'languages' || fieldName === 'activities' || fieldName === 'hobbies') {
-    //             if (!Array.isArray(formData[fieldName]) || formData[fieldName].length === 0) {
-    //                 return false;
-    //             }
-    //         } else {
-    //             if (!formData[fieldName]) {
-    //                 return false;
-    //             }
-    //         }
-    //     }
-    //     return true;
-    // }
-
 
     return (
         <div>

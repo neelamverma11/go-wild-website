@@ -11,6 +11,7 @@ function App() {
   return (
     <BrowserRouter basename='/go-wild-website'>
       <Navbar />
+      {/* <MainPage /> */}
       <Routes>
         <Route path='/' element={<MainPage />} />
         {/* <Route path='/featur' element={<Featurs />} />

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         width: "80%",
         marginTop: '-15px',
-        marginLeft: "2rem",
+        marginLeft: "1.8rem",
         padding: "6px",
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
     },
@@ -113,7 +113,7 @@ const CardItem = () => {
                         component="a"
                         sx={{
                             mr: 5,
-                            display: { xs: 'none', md: 'flex' },
+                            display: { xs: 'flex', md: 'flex' },
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             color: 'black',
@@ -125,14 +125,14 @@ const CardItem = () => {
                     </Typography>
                 </Grid>
                 <Grid item xs={12} sm={5}>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} className={classes.linkBox}>
-                        <Link to='/#' sx={{ my: 2, display: 'block' }} className={classes.linkItem} >
+                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' } }} className={classes.linkBox}>
+                        <Link to='/#' className={classes.linkItem} >
                             Beach
                         </Link>
-                        <Link to='#' sx={{ my: 2, display: 'block' }} className={classes.linkItem}  >
+                        <Link to='#' className={classes.linkItem}  >
                             Mountain
                         </Link>
-                        <Link to='#' sx={{ my: 2, display: 'block' }} className={classes.linkItem}  >
+                        <Link to='#' className={classes.linkItem}  >
                             Waterfalls
                         </Link>
                         <Typography className={classes.buttonArrow} sx={{ mt: 1 }}>
