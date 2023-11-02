@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "white",
         width: "80%",
         marginTop: '-15px',
-        marginLeft: "1.8rem",
+        marginLeft: "1.7rem",
         padding: "6px",
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
     },
