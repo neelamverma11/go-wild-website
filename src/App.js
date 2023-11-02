@@ -9,10 +9,10 @@ import GuidePage from './Components/GuidePage';
 
 function App() {
   return (
-    <BrowserRouter basename='/home'>
+    <BrowserRouter basename='/gowildwebsite'>
       <Navbar />
       <Routes>
-        <Route path='/home' element={<MainPage />} />
+        <Route path='/gowildwebsite' element={<MainPage />} />
         {/* <Route path='/featur' element={<Featurs />} />
         <Route path='/about' element={<AboutPage />} /> */}
         <Route path='/guide' element={<GuidePage />} />
