@@ -74,7 +74,7 @@ const Navbar = () => {
                     GoWild
                 </Typography>
                 <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }} className={classes.linkBox}>
-                    <Link to='/go-wild-website' sx={{ my: 2, display: 'block' }} className={classes.linkItem} >
+                    <Link to='/' sx={{ my: 2, display: 'block' }} className={classes.linkItem} >
                         Home
                     </Link>
                     <Link to='#' sx={{ my: 2, display: 'block' }} className={classes.linkItem}  >
@@ -167,7 +167,7 @@ const Navbar = () => {
                         }}
                     >
                         <MenuItem onClick={handleCloseNavMenu}>
-                            <Link to='/go-wild-website' sx={{ my: 2, color: 'white', display: 'block' }} className={classes.linkItemMobile}>Home </Link>
+                            <Link to='/' sx={{ my: 2, color: 'white', display: 'block' }} className={classes.linkItemMobile}>Home </Link>
                         </MenuItem>
                         <MenuItem onClick={handleCloseNavMenu}>
                             <Link to='#' sx={{ my: 2, color: 'white', display: 'block' }} className={classes.linkItemMobile}>Features </Link>
