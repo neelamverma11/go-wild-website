@@ -2,9 +2,9 @@ import React from 'react';
 import axios from 'axios';
 
 const ApiComponent = async (formData, image, adharCard, panCard, otherID, dob, id) => {
-    const originalDob = "11/05/1972";
-    const [day, month, year] = originalDob.split('/');
-    const formattedDob = `${month}/${day}/${year}`;
+    // const originalDob = dob;
+    // const [day, month, year] = originalDob.split('/');
+    // const formattedDob = `${month}/${day}/${year}`;
 
     const formDataImage = new FormData();
     formDataImage.append('guide_id', id);
@@ -12,7 +12,7 @@ const ApiComponent = async (formData, image, adharCard, panCard, otherID, dob, i
     formDataImage.append('aadhar_id', adharCard);
     formDataImage.append('pan_id', panCard);
     formDataImage.append('other_id', otherID);
-    formDataImage.append('dob', formattedDob);
+    formDataImage.append('dob', dob);
 
     for (const key in formData) {
         formDataImage.append(key, formData[key]);

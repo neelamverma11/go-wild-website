@@ -8,14 +8,14 @@ const DetailFormPage = () => {
             <Container maxWidth="md">
                 <Typography component="h1"
                     variant="h5"
-                    align="start"
+                    align="left"
                     color="black"
                     fontWeight={700}
                     gutterBottom>Kindly fill up these Details
                 </Typography>
                 <Typography component="h1"
                     variant="h6"
-                    align="start"
+                    align="left"
                     color="black"
                     marginBottom={4}
                     fontWeight={700}

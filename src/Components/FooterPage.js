@@ -73,14 +73,14 @@ const FooterPage = () => {
                     <Typography
                         component="h1"
                         variant="h6"
-                        align="start"
+                        align="left"
                         color="white"
                         fontWeight={600}
                         gutterBottom
                     >
                         Go Wild
                     </Typography>
-                    <Typography align="start" color="white" >
+                    <Typography align="left" color="white" >
                         Lorem ipsum dolor sit amet consectetur <br /> adipisicing elit. Natus iste architecto <br /> quo nostrum rerum blanditiis.
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'flex' }, color: "white" }} >
@@ -113,7 +113,7 @@ const FooterPage = () => {
                             </Link>
                         </div>
                     </Box>
-                    <Typography align="start" color="white" >
+                    <Typography align="left" color="white" >
                         Contact us <br /><WhatsAppIcon /> 8979951459 <br /><MailOutlineOutlinedIcon /> gowildexplorer@gmail.com
                     </Typography>
                 </Box>
