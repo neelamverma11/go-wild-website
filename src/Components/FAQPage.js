@@ -95,7 +95,7 @@ const FAQPage = () => {
             <Typography
                 component="h1"
                 variant="h5"
-                align="start"
+                align="left"
                 color="text.primary"
                 fontWeight={700}
                 gutterBottom
@@ -104,7 +104,7 @@ const FAQPage = () => {
             </Typography>
             <Typography
                 variant="p"
-                align="start"
+                align="left"
                 color="text.primary"
                 fontWeight={500}
                 gutterBottom
@@ -122,10 +122,10 @@ const FAQPage = () => {
                             className={classes.singleAccord}
                         >
                             <AccordionSummary expandIcon={<ExpandMoreIcon className={classes.yellowDropdownIcon} />}>
-                                <Typography variant="h6" align="start">{faq.question}</Typography>
+                                <Typography variant="h6" align="left">{faq.question}</Typography>
                             </AccordionSummary>
                             <AccordionDetails className={classes.answer}>
-                                <Typography align="start">{faq.answer}</Typography>
+                                <Typography align="left">{faq.answer}</Typography>
                             </AccordionDetails>
                         </Accordion>
                     ))}
@@ -139,10 +139,10 @@ const FAQPage = () => {
                             className={classes.singleAccord}
                         >
                             <AccordionSummary expandIcon={<ExpandMoreIcon className={classes.yellowDropdownIcon} />}>
-                                <Typography variant="h6" align="start">{faq.question}</Typography>
+                                <Typography variant="h6" align="left">{faq.question}</Typography>
                             </AccordionSummary>
                             <AccordionDetails className={classes.answer}>
-                                <Typography align="start">{faq.answer}</Typography>
+                                <Typography align="left">{faq.answer}</Typography>
                             </AccordionDetails>
                         </Accordion>
                     ))}

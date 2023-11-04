@@ -1,10 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const ApiComponent = async (formData, image, adharCard, panCard, otherID, dob, id) => {
-    // const originalDob = dob;
-    // const [day, month, year] = originalDob.split('/');
-    // const formattedDob = `${month}/${day}/${year}`;
+const ApiComponent = async (formData, image, adharCard, panCard, otherID, dob, id, navigate, handleOpenDialog) => {
 
     const formDataImage = new FormData();
     formDataImage.append('guide_id', id);
@@ -24,11 +21,14 @@ const ApiComponent = async (formData, image, adharCard, panCard, otherID, dob, i
             formDataImage
         );
 
-        if (response.status === 200) {
-            return { success: true, errors: {} };
+        if (response.status === 201) {
+            handleOpenDialog('Success', 'Form data submitted successfully.');
+            navigate('/');
+        } else {
+            handleOpenDialog('Failure', 'Failed to submit the form data. Please try again.');
         }
     } catch (error) {
-        return { success: false, errors: { api: 'API request failed' } };
+        handleOpenDialog('Failure', 'API request failed. Please try again.');
     }
 };
 

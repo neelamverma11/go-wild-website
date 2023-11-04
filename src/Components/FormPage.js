@@ -41,11 +41,6 @@ const FormPage = () => {
     const [selectedState, setSelectedState] = useState('');
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogContent, setDialogContent] = useState({ title: '', message: '' });
-    // console.log(dob)
-    // const originalDob = dob;
-    // const [day, month, year] = originalDob.split('/');
-    // const formattedDob = `${month}/${day}/${year}`;
-    // console.log(formattedDob)
 
     const handleOpenDialog = (title, message) => {
         setDialogContent({ title, message });
@@ -207,13 +202,7 @@ const FormPage = () => {
         }
 
         // API request
-        const apiResponse = await ApiComponent(formData, image, adharCard, panCard, otherID, dob, id);
-        if (apiResponse.status === 200) {
-            handleOpenDialog('Success', 'Form data submitted successfully.');
-            navigate('/')
-        } else {
-            handleOpenDialog('Failure', 'Failed to submit the form data. Please try again.');
-        }
+        const apiResponse = await ApiComponent(formData, image, adharCard, panCard, otherID, dob, id, navigate, handleOpenDialog);
     };
 
     return (

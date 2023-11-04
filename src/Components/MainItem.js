@@ -52,7 +52,7 @@ const MainItem = () => {
                         <Typography
                             component="h1"
                             variant="h6"
-                            align="start"
+                            align="left"
                             color="text.primary"
                             fontWeight={700}
                             gutterBottom
@@ -62,14 +62,14 @@ const MainItem = () => {
                         <Typography
                             component="h1"
                             variant="h5"
-                            align="start"
+                            align="left"
                             color="text.primary"
                             fontWeight={700}
                             gutterBottom
                         >
                             Discover, Explore, Go Wild!"
                         </Typography>
-                        <Typography variant="h6" align="start" color="text.secondary" paragraph>
+                        <Typography variant="h6" align="left" color="text.secondary" paragraph>
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus iste architecto quo nostrum rerum blanditiis, minus aut iusto dolorum incidunt molestiae nam vero ex illo omnis. Nostrum rerum blanditiis eaque.
                         </Typography>
                         <Stack
